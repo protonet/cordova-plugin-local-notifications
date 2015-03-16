@@ -127,8 +127,11 @@ public class Receiver extends BroadcastReceiver {
             .setLargeIcon(options.getIcon())
             .setAutoCancel(options.getAutoCancel())
             .setOngoing(options.getOngoing())
-            .setLights(options.getLedColor(), 3000, 3000)
-            .setColor(options.getColor());
+            .setLights(options.getLedColor(), 3000, 3000);
+        
+        if (Build.VERSION.SDK_INT >= 21) {
+            notification.setColor(options.getColor());
+        }
 
         if (sound != null) {
             notification.setVibrate(new long[] { 300, 300, 300, 300, 300 });
