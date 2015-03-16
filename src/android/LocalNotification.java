@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -42,6 +44,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.http.HttpResponseCache;
 
 /**
  * This plugin utilizes the Android AlarmManager in combination with StatusBar
@@ -65,6 +68,12 @@ public class LocalNotification extends CordovaPlugin {
 
         LocalNotification.webView = super.webView;
         LocalNotification.context = super.cordova.getActivity().getApplicationContext();
+
+        try {
+          File httpCacheDir = new File(context.getCacheDir(), "http");
+          long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
+          HttpResponseCache.install(httpCacheDir, httpCacheSize);
+        } catch (IOException e) {}
     }
 
     @Override
