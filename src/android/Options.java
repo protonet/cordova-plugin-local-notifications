@@ -330,6 +330,7 @@ public class Options {
 
             StrictMode.setThreadPolicy(policy);
 
+            connection.setUseCaches(true);
             connection.setDoInput(true);
             connection.connect();
 
