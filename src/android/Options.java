@@ -246,7 +246,7 @@ public class Options {
      * @return
      *      The notification color for LED
      */
-   public int getColor () {
+   public int getLedColor () {
         String hexColor = options.optString("led", "000000");
         int aRGB        = Integer.parseInt(hexColor,16);
 
@@ -254,6 +254,15 @@ public class Options {
 
         return aRGB;
     }
+
+    public int getColor () {
+         String hexColor = options.optString("color", "000000");
+         int aRGB        = Integer.parseInt(hexColor,16);
+
+         aRGB += 0xFF000000;
+
+         return aRGB;
+     }
 
     /**
      * Returns numerical icon Value

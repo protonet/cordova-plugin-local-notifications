@@ -28,8 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.*;
+import android.app.Notification;
+import android.app.Notification.*;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -118,7 +118,7 @@ public class Receiver extends BroadcastReceiver {
     private Builder buildNotification () {
         Uri sound = options.getSound();
 
-        Builder notification = new NotificationCompat.Builder(context)
+        Builder notification = new Notification.Builder(context)
             .setContentTitle(options.getTitle())
             .setContentText(options.getMessage())
             .setNumber(options.getBadge())
@@ -127,15 +127,16 @@ public class Receiver extends BroadcastReceiver {
             .setLargeIcon(options.getIcon())
             .setAutoCancel(options.getAutoCancel())
             .setOngoing(options.getOngoing())
-            .setLights(options.getColor(), 3000, 3000);
+            .setLights(options.getLedColor(), 3000, 3000)
+            .setColor(options.getColor());
 
         if (sound != null) {
             notification.setVibrate(new long[] { 300, 300, 300, 300, 300 });
             notification.setSound(sound);
         }
 
-        if (Build.VERSION.SDK_INT > 16) {
-            notification.setStyle(new NotificationCompat.BigTextStyle()
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification.setStyle(new Notification.BigTextStyle()
                 .bigText(options.getMessage()));
         }
 
