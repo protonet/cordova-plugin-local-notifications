@@ -31,6 +31,7 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.Notification.*;
 import android.app.NotificationManager;
+import android.graphics.Bitmap;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -117,6 +118,7 @@ public class Receiver extends BroadcastReceiver {
     @SuppressLint("NewApi")
     private Builder buildNotification () {
         Uri sound = options.getSound();
+        Bitmap bmp = options.getIcon();
 
         Builder notification = new Notification.Builder(context)
             .setContentTitle(options.getTitle())
@@ -124,11 +126,14 @@ public class Receiver extends BroadcastReceiver {
             .setNumber(options.getBadge())
             .setTicker(options.getMessage())
             .setSmallIcon(options.getSmallIcon())
-            .setLargeIcon(options.getIcon())
             .setAutoCancel(options.getAutoCancel())
             .setOngoing(options.getOngoing())
             .setLights(options.getLedColor(), 3000, 3000);
-        
+
+        if (bmp != null) {
+          notification.setLargeIcon(bmp);
+        }
+
         if (Build.VERSION.SDK_INT >= 21) {
             notification.setColor(options.getColor());
         }

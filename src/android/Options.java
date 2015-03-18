@@ -164,7 +164,11 @@ public class Options {
      * Returns the icon's ID
      */
     public Bitmap getIcon () {
-        String icon = options.optString("icon", "icon");
+        String icon = options.optString("icon", null);
+        if (icon == null) {
+          return null;
+        }
+
         Bitmap bmp = null;
 
         if (icon.startsWith("http")) {
