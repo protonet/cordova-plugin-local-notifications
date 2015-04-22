@@ -67,17 +67,6 @@
         NSArray* arguments = [command arguments];
         NSMutableDictionary* properties = [arguments objectAtIndex:0];
 
-        NSString* id = [properties objectForKey:@"id"];
-
-        if ([self isNotificationScheduledWithId:id]) {
-            UILocalNotification* notification = [self notificationWithId:id];
-
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.3 * NSEC_PER_SEC),
-                           dispatch_get_main_queue(), ^{
-                               [self cancelNotification:notification fireEvent:NO];
-                           });
-        }
-
         [self scheduleNotificationWithProperties:properties];
         [self execCallback:command];
     }];
@@ -251,14 +240,8 @@
     UILocalNotification* notification = [self notificationWithProperties:
                                          properties];
 
-    NSDictionary* userInfo = notification.userInfo;
-    NSString* id = [userInfo objectForKey:@"id"];
-    NSString* json = [userInfo objectForKey:@"json"];
-
-    [self fireEvent:@"add" id:id json:json];
-
     [[UIApplication sharedApplication]
-     scheduleLocalNotification:notification];
+     presentLocalNotificationNow:notification];
 }
 
 /**
@@ -320,20 +303,13 @@
 {
     UILocalNotification* notification = [[UILocalNotification alloc] init];
 
-    double timestamp = [[options objectForKey:@"date"] doubleValue];
     NSString* msg = [options objectForKey:@"message"];
     NSString* title = [options objectForKey:@"title"];
     NSString* sound = [options objectForKey:@"sound"];
-    NSString* repeat = [options objectForKey:@"repeat"];
     NSInteger badge = [[options objectForKey:@"badge"] intValue];
 
-    notification.fireDate = [NSDate dateWithTimeIntervalSince1970:timestamp];
-    notification.timeZone = [NSTimeZone defaultTimeZone];
     notification.userInfo = [self userDict:options];
     notification.applicationIconBadgeNumber = badge;
-
-    notification.repeatInterval = [[[self repeatDict] objectForKey:repeat]
-                                   intValue];
 
     if (![self stringIsNullOrEmpty:msg])
     {
