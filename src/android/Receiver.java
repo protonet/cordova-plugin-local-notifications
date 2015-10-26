@@ -128,6 +128,7 @@ public class Receiver extends BroadcastReceiver {
             .setSmallIcon(options.getSmallIcon())
             .setAutoCancel(options.getAutoCancel())
             .setOngoing(options.getOngoing())
+            .setPriority(Notification.PRIORITY_HIGH)
             .setLights(options.getLedColor(), 3000, 3000);
 
         if (bmp != null) {
